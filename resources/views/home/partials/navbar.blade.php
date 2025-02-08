@@ -50,7 +50,7 @@
                     <a class="nav-link" href="{{route('free.topics')}}">Free Topics</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('blogs.index')}}">Blog</a>
+                    <a class="nav-link" href="{{route('blogs')}}">Blog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('contact.us')}}">Contact</a>

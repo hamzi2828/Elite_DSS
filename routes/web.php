@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HomeController;
 
 require __DIR__.'/auth.php';
 
@@ -44,25 +45,34 @@ Route::get('contact-us', function () {
 })->name('contact.us');
 
 /********************* Blogs routes *********************/
-Route::get('blogs', function () {
-    return view('home.pages.blogs_main');
-})->name('blogs.index');
+// Route::get('blogs', function () {
+//     return view('home.pages.blogs_main');
+// })->name('blogs.index');
 
-Route::get('blogs_planning', function () {
-    return view('home.pages.blogs_planning');
-})->name('blogs.planning');
+// Route::get('blogs_planning', function () {
+//     return view('home.pages.blogs_planning');
+// })->name('blogs.planning');
 
-Route::get('blogs_motivation', function () {
-    return view('home.pages.blogs_motivation');
-})->name('blogs.motivation');
+// Route::get('blogs_motivation', function () {
+//     return view('home.pages.blogs_motivation');
+// })->name('blogs.motivation');
 
-Route::get('blogs_inspiration', function () {
-    return view('home.pages.blogs_inspiration');
-})->name('blogs.inspiration');
+// Route::get('blogs_inspiration', function () {
+//     return view('home.pages.blogs_inspiration');
+// })->name('blogs.inspiration');
 
-Route::get('blogs_college_addmissions', function () {
-    return view('home.pages.college_admission');
-})->name('blogs.college.addmissions');
+// Route::get('blogs_college_addmissions', function () {
+//     return view('home.pages.college_admission');
+// })->name('blogs.college.addmissions');
+
+/***************** Blogs Routes *****************/
+Route::get('blogs', [HomeController::class, 'blogs'])->name('blogs');
+Route::get('blogs/{blog}', [HomeController::class, 'blog'])->name('blogs.show');
+Route::get('auhor/{id?}', [HomeController::class, 'getBlogsByAuthor'])->name('auhor.show');
+
+Route::get('get-blog/{tag?}/{theme_id?}', [HomeController::class, 'getBlogsByTag'])->name('get.blogsByTag');
+Route::get('search-blog/', [HomeController::class, 'searchBlogs'])->name('search.blogs');
+
 
 /***************** Admin Routes *****************/
 Route::prefix('admin') // Set the prefix to 'admin'

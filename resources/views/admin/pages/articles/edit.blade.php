@@ -8,11 +8,6 @@
     {{ __('Edit Article') }}
 @endsection
 
-@push('css-page')
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
-@endpush
-
 <style>
     .label-title {
         font-size: 2vh !important;
@@ -25,12 +20,12 @@
             <div class="card">
                 <div class="card-body">
                     <form method="post" class="needs-validation"
-                        action="{{ route('admin.articles.update', ['article' => $article->id]) }}">
+                        action="{{ route('admin.articles.update', ['article' => $article->id]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group row mb-4">
                             <div class="text-md-right col-12 col-md-12 col-lg-12">
-                                <button class="btn-submit"><span>{{ __('Update') }}</span></button>
+                                <button class="btn btn-primary"><span>{{ __('Update') }}</span></button>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -107,14 +102,17 @@
                                         </h6>
                                     </div>
                                     <div class="card-body pt-0">
-                                        <div class="dropzone" id="files-upload"></div>
-                                        <input type="hidden" value="{{ $article->getOriginalImage() }}" name="image"
-                                            id="image">
+                                        <label for="myFile" class="custom-file-button mt-2" id="choose-file">Choose a file</label>
+                                        <input type="file" id="myFile" name="image" class="form-control" onchange="displayFileName()"">
+                                        <div>
+                                            <img src="{{ asset('storage/articles/'. $article->image) }}" alt="Author Image" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                        </div>
+                                        <div id="file-name-display" class="mt-2"></div> <!-- Where the file name will be displayed -->
                                         <small class="d-block text-danger">
-                                            Please upload an image with dimensions <span style="font-weight: bold;">1200x628 pixels</span> to ensure optimal display quality.
+                                            Please upload an image with dimensions <span style="font-weight: bold;">1200x628
+                                                pixels</span> to ensure optimal display quality.
                                         </small>
                                     </div>
-                                    <p class="multiple_file_selection mx-4"></p>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +123,7 @@
                             <div class="col-12 col-md-9 col-lg-9">
                                 <div class="card">
                                     <div class="card-body pt-0">
-                                        <textarea placeholder="{{ __('Content') }}" name="content" rows="5"
+                                        <textarea placeholder="{{ __('Content') }}" name="content" rows="5" id="editor"
                                             class="form-control content-editor {{ $errors->has('content') ? ' is-invalid' : '' }}" required>{{ $article->content }}</textarea>
                                         <div class="invalid-feedback">
                                             {{ $errors->first('content') }}
@@ -232,7 +230,7 @@
                         </div>
                         <div class="form-group row mb-4">
                             <div class="text-md-right col-12 col-md-12 col-lg-12">
-                                <button class="btn-submit"><span>{{ __('Update') }}</span></button>
+                                <button class="btn btn-primary"><span>{{ __('Update') }}</span></button>
                             </div>
                         </div>
                     </form>
@@ -241,51 +239,14 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
-    <script src="{{ asset('assets/js/editorplaceholder.js') }}"></script>
+@push('script')
+    <script src="https://cdn.ckeditor.com/4.18.0/standard/ckeditor.js"></script>
+    <!-- A friendly reminder to run on a server, remove this during the integration. -->
     <script>
-        ClassicEditor
-        .create( document.querySelector( '.content-editor' ) )
-        .catch( error => {
-            console.error( error );
-        });
-    </script>  
-    <script>
-        Dropzone.options.filesUpload = {
-            url: '{{ route('admin.articles.file-upload') }}',
-            paramName: "file",
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            maxFiles: 1,
-            init: function() {
-                var mockFile = {
-                    name: "{{ $article->image }}",
-                    size: 12345, // You can set an appropriate size here if known
-                    type: 'image/jpeg' // Set the correct MIME type if known
-                };
-
-                this.emit("addedfile", mockFile);
-                this.emit("thumbnail", mockFile, "{{ $article->image }}");
-                this.emit("complete", mockFile);
-            },
-            accept: function(file, done) {
-                if (file.name == "justinbieber.jpg") {
-                    done("Naha, you don't.");
-                } else {
-                    done();
-                }
-            },
-            success: function(file) {
-                var response = JSON.parse(file.xhr.responseText);
-                $('#image').val(response.name);
-
-                if (this.files.length > 1) {
-                    this.removeFile(this.files[0]);
-                }
+        document.addEventListener("DOMContentLoaded", function () {
+            if (document.getElementById("editor")) {
+                CKEDITOR.replace("editor");
             }
-        };
+        });
     </script>
 @endpush

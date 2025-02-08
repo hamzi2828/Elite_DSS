@@ -25,10 +25,21 @@ class ArticleController extends Controller
     {
         $article = new Article();
         $article->theme_id = $request->theme_id;
+        $article->title = $request->title;
+        $article->author_id = $request->author_id;
         $article->slug = \Str::slug($request->title);
-        $article->fill($request->all());
+        $article->content = $request->content;
+        if ($request->hasFile('image')) {
+            $article->image = fileUpload($request->file('image'), 'articles');
+        }
+        $article->meta_title = $request->meta_title;
+        $article->tag = $request->tag;
+        $article->meta_description = $request->meta_description;
+        $article->focus_keyphrase = $request->focus_keyphrase;
+        $article->schema = $request->schema;
         $article->save();
-        return redirect()->route('admin.pages.articles.index')->with('success', __('Article created successfully'));
+        
+        return redirect()->route('admin.articles.index')->with('success', __('Article created successfully'));
     }
 
     public function edit(Article $article)
@@ -38,26 +49,17 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     {
+        $data = $request->except(['_token']);
         $article->slug = \Str::slug($request->title);
-        $article->fill($request->all());
+        if ($request->hasFile('image')) {
+            $data['image'] = fileUpload($request->file('image'), 'articles');
+        } else {
+            $data = $request->except(['image']);
+        }
+
+        $article->fill($data);
         $article->save();
-        return redirect()->route('admin.pages.articles.index')->with('success', __('Article updated successfully'));
-    }
-
-    public function fileUpload(Request $request)
-    {
-        $validation = Validator::make($request->all(), [
-            'file' => 'image|max:2048'
-        ]);
-
-        if ($validation->fails()) return response()->make($validation->errors()->first(), 400);
-
-        $file = $request->file('file');
-        $name =  time() . '-' . $file->getClientOriginalName();
-        $file->storeAs('/app/public/articles/', $name);
-        return response()->json([
-            'name' => $name,
-        ]);
+        return redirect()->route('admin.articles.index')->with('success', __('Article updated successfully'));
     }
 
     public function destroy(Article $article)
@@ -67,27 +69,11 @@ class ArticleController extends Controller
         {
             $article->delete();
 
-            return redirect()->route('admin.pages.articles.index')->with('success', __('Article deleted successfully'));
+            return redirect()->route('admin.articles.index')->with('success', __('Article deleted successfully'));
         }
         else
         {
             return view('403');
         }
-    }
-
-    public function file_upload(Request $request)
-    {
-        $validation = Validator::make($request->all(), [
-            'file' => 'image|max:2048'
-        ]);
-
-        if ($validation->fails()) return response()->make($validation->errors()->first(), 400);
-
-        $file = $request->file('file');
-        $name =  time() . '-' . $file->getClientOriginalName();
-        $file->storeAs('/app/public/articles/', $name);
-        return response()->json([
-            'name' => $name,
-        ]);
     }
 }

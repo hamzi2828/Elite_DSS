@@ -35,7 +35,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="selection-datatable" class="table dataTable-collapse text-center">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
@@ -62,28 +62,24 @@
                                     @endphp
                                     <tr>
                                         <th scope="row">{{++$index}}</th>
-                                        <td><img src="{{$article->image}}" width="50" alt="image"/></td>
+                                        <td>
+                                            <img src="{{ asset('storage/articles/'. $article->image) }}" width="50" alt="image"/>
+                                        </td>
                                         <td>{{$article->title}}</td>
                                         <td>{{$article->theme ? $article->theme->name : 'N/A'}}</td>
                                         <td>{{$tagName}}</td>
                                         <td>{{$article->created_at}}</td>
                                         <td>
-                                            @can('edit-category')
-                                                <a href="{{ route('admin.articles.edit', $article->id) }}" class="edit-icon" title="{{ __('Edit') }}"><i class="fas fa-pencil-alt"></i></a>
-                                            @endcan
-                                            @can('delete-category')
-                                                <a href="#" class="delete-icon" title="{{ __('Delete') }}" data-confirm="{{ __('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{$article->id}}').submit();"><i class="fas fa-trash"></i></a>
-                                                <form id="delete-form-{{ $article->id }}" action="{{ route('admin.articles.destroy', $article->id) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            @endcan
-                                            @can('edit-category')
-                                                <td class="text-center">
-                                                    <!-- Toggle Button -->
-                                                    <input class="article-status" type="checkbox" role="switch" id="flexSwitchCheckChecked{{$article->id}}" {{$article->status == 1 ? 'checked' : ''}} data-article-id = {{@$article->id}} data-article-title = "{{@$article->title}}"> 
-                                                </td>
-                                            @endcan
+                                            <a href="{{ route('admin.articles.edit', $article->id) }}" class="edit-icon" title="{{ __('Edit') }}"><i class="fas fa-pencil-alt"></i></a>
+                                            <a href="#" class="delete-icon" title="{{ __('Delete') }}" data-confirm="{{ __('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{$article->id}}').submit();"><i class="fas fa-trash"></i></a>
+                                            <form id="delete-form-{{ $article->id }}" action="{{ route('admin.articles.destroy', $article->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                            <td class="text-center">
+                                                <!-- Toggle Button -->
+                                                <input class="article-status" type="checkbox" role="switch" id="flexSwitchCheckChecked{{$article->id}}" {{$article->status == 1 ? 'checked' : ''}} data-article-id = {{@$article->id}} data-article-title = "{{@$article->title}}"> 
+                                            </td>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -95,7 +91,8 @@
         </div>
     </div>
 @endsection
-@push('scripts')
+
+@push('script')
     <script>
         $('.article-status').on('click', function() {
             var articleId = $(this).data('article-id');

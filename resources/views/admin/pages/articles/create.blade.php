@@ -9,7 +9,6 @@
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <style>
         .label-title {
             font-size: 2vh !important;
@@ -22,7 +21,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" class="needs-validation" action="{{ route('admin.articles.store') }}">
+                    <form method="post" class="needs-validation" action="{{route('admin.articles.store')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row mb-4">
                             <div class="text-md-right col-12 col-md-12 col-lg-12">
@@ -99,14 +98,14 @@
                                         </h6>
                                     </div>
                                     <div class="card-body pt-0">
-                                        <div class="dropzone" id="files-upload"></div>
-                                        <input type="hidden" value="" name="image" id="image">
+                                        <label for="myFile" class="custom-file-button mt-2" id="choose-file">Choose a file</label>
+                                        <input type="file" id="myFile" name="image" class="form-control" onchange="displayFileName()">
+                                        <div id="file-name-display" class="mt-2"></div> <!-- Where the file name will be displayed -->
                                         <small class="d-block text-danger">
                                             Please upload an image with dimensions <span style="font-weight: bold;">1200x628
                                                 pixels</span> to ensure optimal display quality.
                                         </small>
                                     </div>
-                                    <p class="multiple_file_selection mx-4"></p>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +116,7 @@
                             <div class="col-12 col-md-9 col-lg-9">
                                 <div class="card">
                                     <div class="card-body pt-0">
-                                        <textarea name="content" rows="10" class="content-editor form-control {{ $errors->has('content') ? ' is-invalid' : '' }}">{{ old('content') }}</textarea>
+                                        <textarea name="content" id="editor" rows="10" class="content-editor form-control {{ $errors->has('content') ? ' is-invalid' : '' }}">{{ old('content') }}</textarea>
                                         <div class="invalid-feedback">
                                             {{ $errors->first('content') }}
                                         </div>
@@ -229,52 +228,14 @@
     </div>
 @endsection
 
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/latest/classic/ckeditor.js"></script>
-    <script src="{{ asset('admin-assets/js/editorplaceholder.js') }}"></script>
+@push('script')
+    <script src="https://cdn.ckeditor.com/4.18.0/standard/ckeditor.js"></script>
     <!-- A friendly reminder to run on a server, remove this during the integration. -->
     <script>
-        window.onload = function() {
-            if (window.location.protocol === 'file:') {
-                alert('This sample requires an HTTP server. Please serve this file with a web server.');
+        document.addEventListener("DOMContentLoaded", function () {
+            if (document.getElementById("editor")) {
+                CKEDITOR.replace("editor");
             }
-        };
-        ClassicEditor
-        .create(document.querySelector('.content-editor'))
-        .catch(error => {
-            console.error(error);
         });
-    </script>
-    <script>
-    <script>
-        Dropzone.options.filesUpload = {
-            url: '{{ route('admin.articles.file-upload') }}',
-            paramName: "file",
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            maxFiles: 1, // Limit to one file
-            init: function() {
-                // No preloading logic for the Add Page
-                console.log("Dropzone initialized for Add Page");
-            },
-            accept: function(file, done) {
-                if (file.name === "justinbieber.jpg") {
-                    done("Naha, you don't.");
-                } else {
-                    done();
-                }
-            },
-            success: function(file) {
-                var response = JSON.parse(file.xhr.responseText);
-                $('#image').val(response.name);
-
-                // Remove older files if a new one is uploaded
-                if (this.files.length > 1) {
-                    this.removeFile(this.files[0]);
-                }
-            }
-        };
     </script>
 @endpush

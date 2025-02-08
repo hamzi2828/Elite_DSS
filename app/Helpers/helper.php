@@ -7,10 +7,10 @@ if (!function_exists('fileUpload')) {
      * @param string $name
      * @return string
      */
-    function fileUpload($media) {
+    function fileUpload($media, $folderName) {
         $file = $media;
         $fileName = time() . '-' . $file->getClientOriginalName();
-        $file->storeAs('authors', $fileName, 'public');
+        $file->storeAs($folderName, $fileName, 'public');
         return $fileName;
     }
 }

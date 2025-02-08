@@ -13,7 +13,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::get();
+        $authors = Author::withCount('articles')->get();
         return view('admin.pages.author.index', compact('authors'));
     }
 
@@ -43,7 +43,7 @@ class AuthorController extends Controller
         $author->image = null;
 
         if ($request->hasFile('image')) {
-            $author->image = fileUpload($request->file('image'));
+            $author->image = fileUpload($request->file('image'), 'authors');
         }
 
         // Save the author to the database
@@ -80,7 +80,7 @@ class AuthorController extends Controller
         $author->name = $validated['name'];
         $author->description = $validated['description'];
         if ($request->hasFile('image')) {
-            $author->image = fileUpload($request->file('image'));
+            $author->image = fileUpload($request->file('image'), 'authors');
         }  
         $author->save();
         return redirect()->route('admin.authors.index')->with('success', __('Article updated successfully'));

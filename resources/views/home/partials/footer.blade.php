@@ -9,7 +9,7 @@
                 <a href="{{route('our.writers')}}" class="footer-nav-link nav-link">Our Writers</a>
                 <a href="{{route('samples')}}" class="footer-nav-link nav-link">Samples</a>
                 <a href="{{route('free.topics')}}" class="footer-nav-link nav-link">Free Topics</a>
-                <a href="{{route('blogs.index')}}" class="footer-nav-link nav-link">Blog</a>
+                <a href="{{route('blogs')}}" class="footer-nav-link nav-link">Blog</a>
                 <a href="{{route('contact.us')}}" class="footer-nav-link nav-link">Contact</a>
             </nav>
 
