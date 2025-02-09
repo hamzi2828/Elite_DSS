@@ -30,7 +30,7 @@
                         <!--<p class="smallPara text-center text-black-50 ">Or sign with</p>-->
 
                         <div class="formDIv">
-                            <form id="PasswordResetForm" method="POST" action="#">
+                            <form id="PasswordResetForm" method="POST" action="{{ route('password.email') }}">
                                 @csrf
                                 @if (session()->has('info'))
                                     <div class="alert alert-success">
