@@ -30,6 +30,10 @@ class RegistrationController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
+
+        $user->assignRole('customer'); // Assign 'customer' role
+
+
         return redirect()->route('login')->with('info', 'Registration successful');    
     }
 }

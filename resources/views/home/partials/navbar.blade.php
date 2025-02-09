@@ -55,9 +55,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('contact.us')}}">Contact</a>
                 </li>
-                <li class="nav-item ms-4">
+                {{-- <li class="nav-item ms-4">
                     <button class="btn btn-submit">Submit</button>
-                </li>
+                </li> --}}
                 @if(auth()->user() == null)
                     <li class="nav-item ms-4">
                         <a class="" href="{{route('login')}}" title="Login">
@@ -67,6 +67,9 @@
                         </a>
                     </li>
                 @else
+                <li class="nav-item ms-4">
+                    <a class="btn btn-submit" href="{{route('user.account')}}">My Account</a>
+                </li>
                     <li class="nav-item ms-4">
                         <form id="logout" method="POST" action="{{route('logout')}}">
                             @csrf

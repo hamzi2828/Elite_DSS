@@ -1,14 +1,21 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MyAccountController;
+use App\Models\User;
 
 require __DIR__.'/auth.php';
 
 Route::get('/', function () {
+    $user = User::find(1); // Get the user
+    if($user){
+        $user->assignRole('admin'); // Assign 'admin' role
+    }
     return view('home.pages.index');
 })->name('home');
 
@@ -44,26 +51,11 @@ Route::get('contact-us', function () {
     return view('home.pages.contact_us');
 })->name('contact.us');
 
-/********************* Blogs routes *********************/
-// Route::get('blogs', function () {
-//     return view('home.pages.blogs_main');
-// })->name('blogs.index');
+Route::middleware('role:customer')->group(function () {
+    Route::get('account', [AccountController::class, 'index'])->name('user.account');
+    Route::put('account/update', [AccountController::class, 'update'])->name('user.account.update');
+});
 
-// Route::get('blogs_planning', function () {
-//     return view('home.pages.blogs_planning');
-// })->name('blogs.planning');
-
-// Route::get('blogs_motivation', function () {
-//     return view('home.pages.blogs_motivation');
-// })->name('blogs.motivation');
-
-// Route::get('blogs_inspiration', function () {
-//     return view('home.pages.blogs_inspiration');
-// })->name('blogs.inspiration');
-
-// Route::get('blogs_college_addmissions', function () {
-//     return view('home.pages.college_admission');
-// })->name('blogs.college.addmissions');
 
 /***************** Blogs Routes *****************/
 Route::get('blogs', [HomeController::class, 'blogs'])->name('blogs');
