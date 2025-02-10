@@ -54,7 +54,7 @@ class HomeController extends Controller
                 'tag'=> $tag,
                 'theme_id'=> $theme_id
             ])->paginate(5);
-            return view('home.blog_by_tag_theme', compact('blogs', 'tag', 'theme_id'));
+            return view('home.blogs.blog_by_tag_theme', compact('blogs', 'tag', 'theme_id'));
         } else {
             $featured_blogs = (clone $blogs)->where([
                 'tag'=> $tag,
