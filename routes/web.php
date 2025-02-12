@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ConsultancyController;
+use App\Http\Controllers\ConsultancyRequestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyAccountController;
+use App\Http\Controllers\OrderController;
 use App\Models\User;
 
 require __DIR__.'/auth.php';
@@ -51,6 +54,10 @@ Route::get('contact-us', function () {
     return view('home.pages.contact_us');
 })->name('contact.us');
 
+Route::resource('order', OrderController::class);
+
+Route::post('consultancy/request', ConsultancyController::class)->name('request.consultancy');
+
 Route::middleware('role:customer')->group(function () {
     Route::get('account', [AccountController::class, 'index'])->name('user.account');
     Route::put('account/update', [AccountController::class, 'update'])->name('user.account.update');
@@ -79,4 +86,5 @@ Route::prefix('admin') // Set the prefix to 'admin'
     Route::resource('themes', ThemeController::class);
     Route::resource('articles', ArticleController::class);
     Route::post('articles/file-upload',['as' => 'articles.file-upload','uses' => 'ArticleController@file_upload']);
+    Route::resource('consultancy_requests', ConsultancyRequestController::class);
 });

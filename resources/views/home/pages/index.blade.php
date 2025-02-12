@@ -25,7 +25,7 @@
                                         writers, personalized solutions, and guaranteed
                                         originality—everything you need to succeed
                                     </p>
-                                    <button class="btn btn-orderss">Order now</button>
+                                    <a class="btn btn-orderss" href="{{ route('order.index') }}">Order now</a>
                                 </div>
                                 <img src="{{asset('images/hero_images.png')}}" class="hero-image" />
                             </div>
@@ -41,37 +41,51 @@
                                 <h2 class="form-title">
                                     Get free consultancy from Dissertation Expert!
                                 </h2>
-                                <form>
+                                @include('home.partials.message')
+                                <form action="{{ route('request.consultancy') }}" method="POST">
+                                    @csrf
                                     <div class="mb-3">
                                         <label class="form-label">
-                                            Full Name
-                                            <span class="required-dot"></span>
+                                            Full Name <span class="required-dot"></span>
                                         </label>
-                                        <input type="text" class="form-control" placeholder="Enter your name" />
+                                        <input name="name" type="text" class="form-control" placeholder="Enter your name" value="{{ old('name') }}" />
+                                        @error('name')
+                                            <p class="mt-2 text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
+                                    
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label class="form-label">
-                                                Email
-                                                <span class="required-dot"></span>
+                                                Email <span class="required-dot"></span>
                                             </label>
-                                            <input type="email" class="form-control" placeholder="youremail@gmail.com" />
+                                            <input name="email" type="email" class="form-control" placeholder="youremail@gmail.com" value="{{ old('email') }}" />
+                                            @error('email')
+                                                <p class="mt-2 text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
+                                        
                                         <div class="col-md-6">
                                             <label class="form-label">
-                                                Phone Number
-                                                <span class="required-dot"></span>
+                                                Phone Number <span class="required-dot"></span>
                                             </label>
-                                            <input type="tel" class="form-control" placeholder="+44 XXXXXXXXXX" />
+                                            <input name="phone" type="tel" class="form-control" placeholder="+44 XXXXXXXXXX" value="{{ old('phone') }}" />
+                                            @error('phone')
+                                                <p class="mt-2 text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
+
                                     <div class="mb-4">
                                         <label class="form-label">
-                                            Message
-                                            <span class="required-dot"></span>
+                                            Message <span class="required-dot"></span>
                                         </label>
-                                        <textarea class="form-control" rows="5" placeholder="please let us know how can we help you."></textarea>
+                                        <textarea name="message" class="form-control" rows="5" placeholder="Please let us know how we can help you.">{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <p class="mt-2 text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
+
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-request">
                                             Request Information
@@ -108,7 +122,7 @@
                                             to your needs.
                                         </p>
                                     </div>
-                                    <button class="btn btn-orderss">Order now</button>
+                                    <a class="btn btn-orderss" href="{{route('order.index')}}">Order now</a>
                                 </div>
                             </div>
                         </div>
@@ -691,8 +705,8 @@
                                 content tailored to your needs.
                             </p>
                             <div class="buttons-wrapper">
-                                <a href="#" class="btn btn-order btn-primary-custom">Order now</a>
-                                <a href="#" class="btn btn-orders btn-outline-custom">View all Sample</a>
+                                <a href="{{ route('order.index') }}" class="btn btn-order btn-primary-custom">Order now</a>
+                                <a href="{{ route('samples') }}" class="btn btn-orders btn-outline-custom">View all Sample</a>
                             </div>
                         </div>
                     </div>

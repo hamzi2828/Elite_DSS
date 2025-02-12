@@ -21,7 +21,7 @@
                         interested in working with us as?.
                     </div>
                     <div>
-                        <button class="btn btn-order-now">Order now</button>
+                        <a class="btn btn-orderss" href="{{ route('order.index') }}">Order now</a>
                     </div>
                 </div>
 

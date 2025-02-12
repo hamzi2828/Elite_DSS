@@ -20,7 +20,7 @@
                         Interested in working with us? Avail 30% off on your first order
                     </div>
                     <div>
-                        <button class="btn btn-order-now">Order now</button>
+                        <a class="btn btn-orderss" href="{{ route('order.index') }}">Order now</a>
                     </div>
                 </div>
 
@@ -127,7 +127,7 @@
                                             to your needs.
                                         </p>
                                     </div>
-                                    <button class="btn btn-order-now">Order now</button>
+                                    <a class="btn btn-orderss" href="{{ route('order.index') }}">Order now</a>
                                 </div>
                             </div>
                         </div>
@@ -408,8 +408,8 @@
                                 content tailored to your needs.
                             </p>
                             <div class="buttons-wrapper">
-                                <a href="#" class="btn btn-order btn-primary-custom">Order now</a>
-                                <a href="#" class="btn btn-orders btn-outline-custom">View all Sample</a>
+                                <a href="{{route('order.index')}}" class="btn btn-order btn-primary-custom">Order now</a>
+                                <a href="{{route('samples')}}" class="btn btn-orders btn-outline-custom">View all Sample</a>
                             </div>
                         </div>
                     </div>

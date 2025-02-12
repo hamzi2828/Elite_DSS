@@ -18,7 +18,7 @@
 
     <li class="nav-item @yield('author-active')">
         <a class="nav-link" href="{{ route('admin.authors.index') }}">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fas fa-fw fa-user"></i>
             <span>Author</span></a>
     </li>
 
@@ -30,7 +30,13 @@
 
     <li class="nav-item @yield('article-active')">
         <a class="nav-link" href="{{ route('admin.articles.index') }}">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fas fa-fw fa-book"></i>
             <span>Articles</span></a>
+    </li>
+
+    <li class="nav-item @yield('consultancy-active')">
+        <a class="nav-link" href="{{ route('admin.consultancy_requests.index') }}">
+            <i class="fas fa-fw fa-bell"></i>
+            <span>Consultancy Requests</span></a>
     </li>
 </ul>

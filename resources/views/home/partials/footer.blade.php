@@ -22,8 +22,8 @@
 
                     <div class="d-flex flex-column align-items-end gap-4">
                         <div class="d-flex gap-3 flex-wrap">
-                            <a href="#" class="footer-cta-btn btn-order">Place Order</a>
-                            <a href="#" class="footer-cta-btn btn-consultation">Get Free Consultation</a>
+                            <a href="{{route('order.index')}}" class="footer-cta-btn btn-order">Place Order</a>
+                            <a href="{{route('home')}}" class="footer-cta-btn btn-consultation">Get Free Consultation</a>
                         </div>
 
                         <div class="d-flex gap-3">
