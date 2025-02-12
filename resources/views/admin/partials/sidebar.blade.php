@@ -16,9 +16,15 @@
             <span>Dashboard</span></a>
     </li>
 
+    <li class="nav-item @yield('consultancy-active')">
+        <a class="nav-link" href="{{ route('admin.users.get') }}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Users</span></a>
+    </li>
+
     <li class="nav-item @yield('author-active')">
         <a class="nav-link" href="{{ route('admin.authors.index') }}">
-            <i class="fas fa-fw fa-user"></i>
+            <i class="fas fa-fw fa-pen"></i>
             <span>Author</span></a>
     </li>
 

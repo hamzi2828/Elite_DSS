@@ -10,6 +10,7 @@ use App\Http\Controllers\ConsultancyRequestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 
 require __DIR__.'/auth.php';
@@ -87,4 +88,5 @@ Route::prefix('admin') // Set the prefix to 'admin'
     Route::resource('articles', ArticleController::class);
     Route::post('articles/file-upload',['as' => 'articles.file-upload','uses' => 'ArticleController@file_upload']);
     Route::resource('consultancy_requests', ConsultancyRequestController::class);
+    Route::get('users', [UserController::class, 'index'])->name('users.get');
 });
