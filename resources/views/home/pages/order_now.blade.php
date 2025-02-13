@@ -246,10 +246,10 @@
                                     </select>
                                     <label for="writer_preference">Writer Preference</label>
                                     <select class="form-select" name="writer_preference" id="writer_preference">
-                                        <option value="Best available">Best available</option>
-                                        <option value="Advanced (+5%)">Advanced (+5%)</option>
-                                        <option value="Top 10 (+7%)">Top 10 (+7%)</option>
-                                        <option value="Native speaker (+9%)">Native speaker (+9%)</option>
+                                        <option value="Best available" data-pref="0">Best available</option>
+                                        <option value="Advanced (+5%)" data-pref="5">Advanced (+5%)</option>
+                                        <option value="Top 10 (+7%)" data-pref="7">Top 10 (+7%)</option>
+                                        <option value="Native speaker (+9%)" data-pref="9">Native speaker (+9%)</option>
                                     </select>
                                 </div>
                                 {{-- Additional Service --}}
@@ -314,6 +314,9 @@
                                     <li class="list-group-item">
                                         <strong>Spacing:</strong> <span id="spacing-text">Double</span>
                                     </li>
+                                    <li class="list-group-item" id='writer-pref'>
+                                        <strong>Writer Preference:</strong> <span id="writer-preference"></span>
+                                    </li>
                                     <li class="list-group-item">
                                         <strong>Total Price:</strong> £<span id="total_price">8.00</span>
                                     </li>
@@ -343,6 +346,8 @@
                 deadlineText: document.getElementById("deadline-text"),
                 noOfPages: document.getElementById("no_of_pages"),
                 spacingText: document.getElementById("spacing-text"),
+                writerPreference: document.getElementById("writer_preference"),
+                writerPreferenceText: document.getElementById("writer-preference"),
             };
 
             // Initialize price calculation
@@ -361,20 +366,29 @@
                 updateTextContent(elements.deadlineText, elements.urgency.value);
                 updateTextContent(elements.noOfPages, elements.pages.value);
                 updateTextContent(elements.spacingText, elements.spacing.value);
+                updateTextContent(elements.writerPreferenceText, elements.writerPreference.value);
 
                 // Retrieve selected prices
                 const academicLevelPrice = getSelectedData(elements.academicLevel, "levelPrice");
                 const deadlinePrice = getSelectedData(elements.urgency, "deadlinePrice");
+                const writerPreferencePerc = getSelectedData(elements.writerPreference, "pref");
+                console.log(writerPreferencePerc);
                 const spacingValue = elements.spacing.value;
                 const pages = parseFloat(elements.pages.value) || 1;
 
                 // Calculate total price
-                let total = academicLevelPrice + deadlinePrice;
+                let total = (academicLevelPrice + deadlinePrice) ;
                 if (spacingValue === "Single") total *= 2;
                 total *= pages;
+                let writerPrefPer = (total * writerPreferencePerc) / 100
+                total += writerPrefPer;
 
                 // Display total price
                 updateTextContent(elements.totalPrice, total.toFixed(2));
+                updateTextContent(
+                    elements.writerPreferenceText, 
+                    `${elements.writerPreference.value} = ${writerPrefPer}`
+                );
             }
 
             // Helper function to update text content
