@@ -168,30 +168,30 @@
                                 <div class="form-group me-3">
                                     <label for="academic_level">Academic Level</label>
                                     <select class="form-select" name="academic_level" id="academic_level">
-                                        <option value="High School">High School</option>
-                                        <option value="Undergraduate (yrs. 1-2)">Undergraduate (yrs. 1-2)</option>
-                                        <option value="Undergraduate (yrs. 3-4)">Undergraduate (yrs. 3-4)</option>
-                                        <option value="Graduate">Graduate</option>
-                                        <option value="PhD">PhD</option>
+                                        <option value="High School" data-level-price="7">High School</option>
+                                        <option value="Undergraduate (yrs. 1-2)" data-level-price="8">Undergraduate (yrs. 1-2)</option>
+                                        <option value="Undergraduate (yrs. 3-4)" data-level-price="9">Undergraduate (yrs. 3-4)</option>
+                                        <option value="Graduate" data-level-price="10">Graduate</option>
+                                        <option value="PhD" data-level-price="11">PhD</option>
                                     </select>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="urgency">Deadline</label>
                                     <select class="form-select" name="urgency" id="urgency">
-                                        <option value="4h">4 Hours</option>
-                                        <option value="8h">8 Hours</option>
-                                        <option value="24h">24 Hours</option>
-                                        <option value="2d">2 Days</option>
-                                        <option value="3d">3 Days</option>
-                                        <option value="5d">5 Days</option>
-                                        <option value="14d">14 Days</option>
+                                        <option value="4h" data-deadline-price="6">4 Hours</option>
+                                        <option value="8h" data-deadline-price="5">8 Hours</option>
+                                        <option value="24h" data-deadline-price="4">24 Hours</option>
+                                        <option value="2d" data-deadline-price="3">2 Days</option>
+                                        <option value="3d" data-deadline-price="2">3 Days</option>
+                                        <option value="5d" data-deadline-price="1">5 Days</option>
+                                        <option value="14d" data-deadline-price="0">14 Days</option>
                                     </select>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="spacing">Spacing</label>
                                     <select class="form-select" name="spacing" id="spacing">
-                                        <option value="Double">Double</option>
-                                        <option value="Single">Single</option>
+                                        <option value="Double" data-spacing-price="1">Double</option>
+                                        <option value="Single" data-spacing-price="2">Single</option>
                                     </select>
                                 </div>
                             </div>
@@ -217,16 +217,16 @@
                                     <input class="form-control rounded border" type="number" id="pages"
                                         name="pages" min="0" max="999" value="1">
                                 </div>
-                                <div class="me-3">
+                                {{-- <div class="me-3">
                                     <label for="charts">Charts</label>
                                     <input class="form-control rounded border" type="number" id="charts"
                                         name="charts" min="0" max="999" value="0">
-                                </div>
-                                <div class="me-3">
+                                </div> --}}
+                                {{-- <div class="me-3">
                                     <label for="slides">PowerPoint Slides</label>
                                     <input class="form-control rounded border" type="number" id="slides"
                                         name="slides" min="0" max="999" value="0">
-                                </div>
+                                </div> --}}
                                 <div class="me-3">
                                     <label for="sources">Citations</label>
                                     <input class="form-control rounded border" type="number" id="sources"
@@ -252,7 +252,8 @@
                                         <option value="Native speaker (+9%)">Native speaker (+9%)</option>
                                     </select>
                                 </div>
-                                <div class="">
+                                {{-- Additional Service --}}
+                                {{-- <div class=""> 
                                     <div>
                                         <label for="">Additional Services
                                     </div>
@@ -281,7 +282,7 @@
                                         </label>
                                     </div>
                                     </label>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-primary text-white" type="submit"
@@ -297,21 +298,24 @@
                                 <h5 class="card-title text-center">Order Summary</h5>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        <strong>Undergraduate (yrs. 1-2)</strong>
+                                        <strong id="adm-level">Undergraduate (yrs. 1-2)</strong>
                                         <br>
-                                        Essay (any type) <br>English 101
+                                        <span id="paper-type">Essay (any type)</span> 
+                                        <br>
+                                        <span id="desc">English 101</span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Deadline:</strong> 14d
+                                        <strong>Deadline:</strong> 
+                                        <span id="deadline-text">14d</span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Pages:</strong> 1
+                                        <strong>Pages:</strong> <span id="no_of_pages">1</span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Spacing:</strong> Double
+                                        <strong>Spacing:</strong> <span id="spacing-text">Double</span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Total Price:</strong> £8.00
+                                        <strong>Total Price:</strong> £<span id="total_price">8.00</span>
                                     </li>
                                 </ul>
                             </div>
@@ -322,3 +326,66 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = {
+                academicLevel: document.getElementById("academic_level"),
+                urgency: document.getElementById("urgency"),
+                spacing: document.getElementById("spacing"),
+                pages: document.getElementById("pages"),
+                paperType: document.getElementById("type_of_paper"),
+                discipline: document.getElementById("discipline"),
+                totalPrice: document.getElementById("total_price"),
+                admLevel: document.getElementById("adm-level"),
+                paperTypeText: document.getElementById("paper-type"),
+                desc: document.getElementById("desc"),
+                deadlineText: document.getElementById("deadline-text"),
+                noOfPages: document.getElementById("no_of_pages"),
+                spacingText: document.getElementById("spacing-text"),
+            };
+
+            // Initialize price calculation
+            changePrice();
+
+            // Attach event listeners
+            Object.values(elements).forEach((el) => {
+                if (el) el.addEventListener("change", changePrice);
+            });
+
+            function changePrice() {
+                // Update displayed values
+                updateTextContent(elements.admLevel, elements.academicLevel.value);
+                updateTextContent(elements.paperTypeText, elements.paperType.value);
+                updateTextContent(elements.desc, elements.discipline.value);
+                updateTextContent(elements.deadlineText, elements.urgency.value);
+                updateTextContent(elements.noOfPages, elements.pages.value);
+                updateTextContent(elements.spacingText, elements.spacing.value);
+
+                // Retrieve selected prices
+                const academicLevelPrice = getSelectedData(elements.academicLevel, "levelPrice");
+                const deadlinePrice = getSelectedData(elements.urgency, "deadlinePrice");
+                const spacingValue = elements.spacing.value;
+                const pages = parseFloat(elements.pages.value) || 1;
+
+                // Calculate total price
+                let total = academicLevelPrice + deadlinePrice;
+                if (spacingValue === "Single") total *= 2;
+                total *= pages;
+
+                // Display total price
+                updateTextContent(elements.totalPrice, total.toFixed(2));
+            }
+
+            // Helper function to update text content
+            function updateTextContent(element, value) {
+                if (element) element.textContent = value;
+            }
+
+            // Helper function to get dataset values safely
+            function getSelectedData(element, dataAttr) {
+                return parseFloat(element.options[element.selectedIndex]?.dataset[dataAttr]) || 0;
+            }
+        });
+    </script>
+@endpush
