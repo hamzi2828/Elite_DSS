@@ -89,4 +89,5 @@ Route::prefix('admin') // Set the prefix to 'admin'
     Route::post('articles/file-upload',['as' => 'articles.file-upload','uses' => 'ArticleController@file_upload']);
     Route::resource('consultancy_requests', ConsultancyRequestController::class);
     Route::get('users', [UserController::class, 'index'])->name('users.get');
+    Route::get('get/orders', [OrderController::class, 'getOrders'])->name('orders.get');
 });

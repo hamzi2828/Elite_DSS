@@ -45,4 +45,10 @@
             <i class="fas fa-fw fa-bell"></i>
             <span>Consultancy Requests</span></a>
     </li>
+
+    <li class="nav-item @yield('orders-active')">
+        <a class="nav-link" href="{{ route('admin.orders.get') }}">
+            <i class="fas fa-fw fa-sort"></i>
+            <span>Orders</span></a>
+    </li>
 </ul>

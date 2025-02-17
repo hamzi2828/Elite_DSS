@@ -2,6 +2,13 @@
 @section('title')
     <title>Order Now | Elite Academic Expert</title>
 @endsection
+@push('styles')
+    <style>
+        .text-error {
+            color: red
+        }
+    </style>
+@endpush
 @section('section')
     <div class="main-content">
         <div class="main-container">
@@ -10,23 +17,35 @@
                     <h1 class="elite-about__heading">Place Order</h1>
                 </div>
                 <div class="row container">
+                    @include('home.partials.message')
                     <div class="col-lg-8">
-                        <form>
+                        <form action="{{route('order.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="total_price" id="total-price">
                             <div class="d-flex mb-3">
                                 <div class="form-group me-3">
                                     <label for="name">Name</label>
-                                    <input type="name" name="email" class="form-control border border-dark"
-                                        id="name" placeholder="Enter Name">
+                                    <input type="name" name="name" class="form-control border border-dark"
+                                        id="name" placeholder="Enter Name" value="{{old('name')}}">
+                                        <div class="text-error">
+                                            {{ $errors->first('name') }}
+                                        </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control border border-dark" id="email"
-                                        placeholder="Enter Email">
+                                    <input type="email" name="email" class="form-control border border-dark" id="email"
+                                        placeholder="Enter Email" value="{{old('email')}}">
+                                    <div class="text-error">
+                                        {{ $errors->first('email') }}
+                                    </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="phone">Phone</label>
-                                    <input type="phone" class="form-control border border-dark" id="phone"
-                                        placeholder="Enter Phone">
+                                    <input type="phone" name="phone" class="form-control border border-dark" id="phone"
+                                        placeholder="Enter Phone" value="{{old('phone')}}">
+                                    <div class="text-error">
+                                        {{ $errors->first('phone') }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex mb-3">
@@ -75,6 +94,9 @@
                                         <option value="Term paper">Term paper</option>
                                         <option value="Thesis/Thesis chapter">Thesis/Thesis chapter</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('type_of_paper') }}
+                                    </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="discipline">Discipline</label>
@@ -162,6 +184,9 @@
                                         <option value="Medical Sciences (Anatomy, Physiology, Pharmacology etc.)">Medical
                                             Sciences (Anatomy, Physiology, Pharmacology etc.)</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('discipline') }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex mb-3">
@@ -174,6 +199,9 @@
                                         <option value="Graduate" data-level-price="10">Graduate</option>
                                         <option value="PhD" data-level-price="11">PhD</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('academic_level') }}
+                                    </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="urgency">Deadline</label>
@@ -186,6 +214,9 @@
                                         <option value="5d" data-deadline-price="1">5 Days</option>
                                         <option value="14d" data-deadline-price="0">14 Days</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('urgency') }}
+                                    </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="spacing">Spacing</label>
@@ -193,22 +224,34 @@
                                         <option value="Double" data-spacing-price="1">Double</option>
                                         <option value="Single" data-spacing-price="2">Single</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('spacing') }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex mb-3">
                                 <div class="form-group me-3">
                                     <label for="name">Paper Title</label>
                                     <textarea class="form-control border border-dark" name="paper_title"></textarea>
+                                    <div class="text-error">
+                                        {{ $errors->first('paper_title') }}
+                                    </div>
                                 </div>
                                 <div class="form-group me-3">
                                     <label for="email">Paper Details</label>
                                     <textarea class="form-control border border-dark" name="paper_details"></textarea>
+                                    <div class="text-error">
+                                        {{ $errors->first('paper_details') }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Additional Material (Documents)
                                     <input class="form-control" type="file" name="additional_material"
                                         multiple="">
+                                    <div class="text-error">
+                                        {{ $errors->first('additional_material') }}
+                                    </div>
                                 </label>
                             </div>
                             <div class="d-flex mb-3">
@@ -216,6 +259,9 @@
                                     <label for="pages">Pages</label>
                                     <input class="form-control rounded border" type="number" id="pages"
                                         name="pages" min="0" max="999" value="1">
+                                    <div class="text-error">
+                                        {{ $errors->first('pages') }}
+                                    </div>
                                 </div>
                                 {{-- <div class="me-3">
                                     <label for="charts">Charts</label>
@@ -231,6 +277,9 @@
                                     <label for="sources">Citations</label>
                                     <input class="form-control rounded border" type="number" id="sources"
                                         name="sources" min="0" max="999" value="0">
+                                    <div class="text-error">
+                                        {{ $errors->first('sources') }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex mb-3">
@@ -244,6 +293,9 @@
                                         <option value="Not applicable">Not applicable</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('format') }}
+                                    </div>
                                     <label for="writer_preference">Writer Preference</label>
                                     <select class="form-select" name="writer_preference" id="writer_preference">
                                         <option value="Best available" data-pref="0">Best available</option>
@@ -251,6 +303,9 @@
                                         <option value="Top 10 (+7%)" data-pref="7">Top 10 (+7%)</option>
                                         <option value="Native speaker (+9%)" data-pref="9">Native speaker (+9%)</option>
                                     </select>
+                                    <div class="text-error">
+                                        {{ $errors->first('writer_preference') }}
+                                    </div>
                                 </div>
                                 {{-- Additional Service --}}
                                 {{-- <div class=""> 
@@ -318,7 +373,7 @@
                                         <strong>Writer Preference:</strong> <span id="writer-preference"></span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Total Price:</strong> £<span id="total_price">8.00</span>
+                                        <strong>Total Price:</strong> £<span id="total_price"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -330,6 +385,11 @@
     </div>
 @endsection
 @push('scripts')
+    <script>
+        setTimeout(function() {
+            document.querySelectorAll(".text-error, .alert-success").forEach(el => el.style.display = "none");
+        }, 5000);
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const elements = {
@@ -382,6 +442,8 @@
                 total *= pages;
                 let writerPrefPer = (total * writerPreferencePerc) / 100
                 total += writerPrefPer;
+
+                document.getElementById('total-price').value = total.toFixed(2);
 
                 // Display total price
                 updateTextContent(elements.totalPrice, total.toFixed(2));

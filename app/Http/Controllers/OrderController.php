@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\OrderRequest;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
@@ -25,9 +27,16 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
-        //
+        $inputData = $request->except('_token');
+        $inputData['user_id'] = auth()->user()->id ?? null;
+        if ($request->hasFile('additional_material')) {
+            $inputData['attachement'] = fileUpload($request->file('additional_material'), 'attachments');
+        }
+        Order::create($inputData);
+        return redirect()->route('order.index')->with('success', __('Order Placed successfully'));
+
     }
 
     /**
@@ -60,5 +69,15 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Get Orders to show on Dashbaord.
+     */
+    public function getOrders() {
+        $orders = Order::orderBy('created_at', 'DESC')->get();
+        return view('admin.pages.orders.index', [
+            'orders'=> $orders
+        ]);
     }
 }
